@@ -13,13 +13,13 @@ namespace GestaoProdutos.Api.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ApiDbContext _ctx;
+
         private readonly IProdutoService<ProdutoDTO> _produtoService;
 
-        public ProductController(ApiDbContext ctx, IProdutoService<ProdutoDTO> produtoService)
+        public ProductController(IProdutoService<ProdutoDTO> produtoService)
         {
             this._produtoService = produtoService;
-            this._ctx = ctx;
+ 
         }
 
         // Listar todos os produtos 
@@ -38,16 +38,14 @@ namespace GestaoProdutos.Api.Controllers
         }
 
 
-
-
         // Recuperar um produto pelo código
         [HttpGet("{codigo}")]
-        public IActionResult Get(string codigo)
+        public IActionResult GetProduto(string codigo)
         {
             try
             {
-                var produto = _ctx.Produtos?.FirstOrDefault(p => p.Codigo.Equals(codigo));
-                return Ok(new List<Produto> { produto });
+                var produtoCodigo = _produtoService.GetPorCodigo(codigo);
+                return Ok(produtoCodigo.Result);
             }
             catch (ArgumentException ex)
             {
