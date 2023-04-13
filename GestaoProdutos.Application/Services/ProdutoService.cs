@@ -28,24 +28,19 @@ namespace GestaoProdutos.Application.Services
 
         public async Task<IEnumerable<ProdutoDTO>> GetFiltrado(string filtro, int page, int pageSize)
         {
-            IEnumerable<Produto> produtos;
-            if (string.IsNullOrEmpty(filtro))
+            var produtos = _dbContext.Produtos.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filtro))
             {
-                produtos = await _dbContext.Produtos.ToListAsync();
-            }
-            else
-            {
-                produtos = await _dbContext.Produtos.Where(p => p.Descricao.Contains(filtro)).ToListAsync();
+                produtos = produtos.Where(p => p.Descricao.Contains(filtro));
             }
 
-            var pagedProdutos = _pagedResultService.GetPagedResult(produtos.AsQueryable(), page, pageSize);
+            var pagedProdutos = _pagedResultService.GetPagedResult(produtos, page, pageSize);
+
             var produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(pagedProdutos.Items);
+
             return produtosDTO;
         }
-
-
-
-
 
     }
 }

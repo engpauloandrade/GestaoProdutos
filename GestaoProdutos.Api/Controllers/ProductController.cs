@@ -28,7 +28,7 @@ namespace GestaoProdutos.Api.Controllers
         {
             try
             {
-                var produtoPaginado = _produtoService.GetFiltrado(filtro.Codigo, pagina, tamanhoPagina);
+                var produtoPaginado = _produtoService.GetFiltrado(filtro.Descricao, pagina, tamanhoPagina);
                 return Ok(produtoPaginado.Result);
             }
             catch (ArgumentException ex)
@@ -36,9 +36,6 @@ namespace GestaoProdutos.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
 
 
         // Recuperar um produto pelo código

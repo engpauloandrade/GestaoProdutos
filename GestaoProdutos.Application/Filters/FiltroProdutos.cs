@@ -6,15 +6,15 @@ namespace GestaoProdutos.Application.Filters
     public class FiltroProdutos : IFiltro<ProdutoDTO>
     {
 
-        public string? Codigo { get; set; } = string.Empty;
+        public string? Descricao { get; set; } = string.Empty;
 
         public ProdutoDTO? Dado()
         {
             ProdutoDTO produto = new();
 
-            if (!string.IsNullOrEmpty(this.Codigo))
+            if (!string.IsNullOrEmpty(this.Descricao))
             {
-                produto.Codigo = this.Codigo;
+                produto.Descricao = this.Descricao;
 
             }
             return produto;

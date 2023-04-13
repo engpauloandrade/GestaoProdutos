@@ -2,6 +2,6 @@
 {
     public interface IFiltro<T>
     {
-        string Codigo { get; set; }
+        string Descricao { get; set; }
     }
 }
