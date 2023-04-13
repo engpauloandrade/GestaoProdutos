@@ -24,11 +24,11 @@ namespace GestaoProdutos.Api.Controllers
 
         // Listar todos os produtos 
         [HttpGet]
-        public IActionResult GetProdutosList([FromQuery] string filtro, [FromQuery] int pagina = PaginacaoBase.PAGINA_PADRAO, [FromQuery] int tamanhoPagina = PaginacaoBase.TAMANHO_PADRAO)
+        public IActionResult GetProdutosList([FromQuery] FiltroProdutos? filtro, [FromQuery] int pagina = PaginacaoBase.PAGINA_PADRAO, [FromQuery] int tamanhoPagina = PaginacaoBase.TAMANHO_PADRAO)
         {
             try
             {
-                var produtoPaginado = _produtoService.GetFiltrado(filtro, pagina, tamanhoPagina);
+                var produtoPaginado = _produtoService.GetFiltrado(filtro.Codigo, pagina, tamanhoPagina);
                 return Ok(produtoPaginado.Result);
             }
             catch (ArgumentException ex)
@@ -36,6 +36,9 @@ namespace GestaoProdutos.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
 
 
         // Recuperar um produto pelo código

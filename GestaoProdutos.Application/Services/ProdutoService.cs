@@ -3,6 +3,7 @@ using GestaoProdutos.Application.DTO;
 using GestaoProdutos.Domain.Interfaces;
 using GestaoProdutos.Domain.Model;
 using GestaoProdutos.Persistence.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace GestaoProdutos.Application.Services
 {
@@ -27,11 +28,21 @@ namespace GestaoProdutos.Application.Services
 
         public async Task<IEnumerable<ProdutoDTO>> GetFiltrado(string filtro, int page, int pageSize)
         {
-            var produtos = _dbContext.Produtos.Where(p => p.Descricao.Contains(filtro ?? "")).ToList();
+            IEnumerable<Produto> produtos;
+            if (string.IsNullOrEmpty(filtro))
+            {
+                produtos = await _dbContext.Produtos.ToListAsync();
+            }
+            else
+            {
+                produtos = await _dbContext.Produtos.Where(p => p.Descricao.Contains(filtro)).ToListAsync();
+            }
+
             var pagedProdutos = _pagedResultService.GetPagedResult(produtos.AsQueryable(), page, pageSize);
             var produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(pagedProdutos.Items);
             return produtosDTO;
         }
+
 
 
 
