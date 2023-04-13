@@ -20,7 +20,7 @@ namespace GestaoProdutos.Application.Services
             this._mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProdutoDTO>> GetPaginado(string filtro, int page, int pageSize)
+        public async Task<IEnumerable<ProdutoDTO>> GetFiltrado(string filtro, int page, int pageSize)
         {
             var produtos = _dbContext.Produtos.Where(p => p.Descricao.Contains(filtro ?? "")).ToList();
             var pagedProdutos = _pagedResultService.GetPagedResult(produtos.AsQueryable(), page, pageSize);

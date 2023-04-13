@@ -14,13 +14,11 @@ namespace GestaoProdutos.Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ApiDbContext _ctx;
-        private readonly IPagedResultService<Produto> _pagedResultService;
         private readonly IProdutoService<ProdutoDTO> _produtoService;
 
-        public ProductController(ApiDbContext ctx, IPagedResultService<Produto> pagedResultService, IProdutoService<ProdutoDTO> produtoService)
+        public ProductController(ApiDbContext ctx, IProdutoService<ProdutoDTO> produtoService)
         {
             this._produtoService = produtoService;
-            this._pagedResultService= pagedResultService;
             this._ctx = ctx;
         }
 
@@ -30,7 +28,7 @@ namespace GestaoProdutos.Api.Controllers
         {
             try
             {
-                var produtoPaginado = _produtoService.GetPaginado(filtro, pagina, tamanhoPagina);
+                var produtoPaginado = _produtoService.GetFiltrado(filtro, pagina, tamanhoPagina);
                 return Ok(produtoPaginado.Result);
             }
             catch (ArgumentException ex)
