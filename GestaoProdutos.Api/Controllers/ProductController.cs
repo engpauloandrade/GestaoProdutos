@@ -1,4 +1,5 @@
-﻿using GestaoProdutos.Application.Filters;
+﻿using GestaoProdutos.Application.DTO;
+using GestaoProdutos.Application.Filters;
 using GestaoProdutos.Application.Pagination;
 using GestaoProdutos.Application.Services;
 using GestaoProdutos.Domain.Interfaces;
@@ -39,17 +40,25 @@ namespace GestaoProdutos.Api.Controllers
 
 
 
-        // Recuperar um produto por código
+        // Recuperar um produto pelo código
         [HttpGet("{codigo}")]
-        public ActionResult<Produto> Get(int codigo)
+        public IActionResult Get(string codigo)
         {
-            return Ok();
+            try
+            {
+                var produto = _ctx.Produtos?.FirstOrDefault(p => p.Codigo.Equals(codigo));
+                return Ok(new List<Produto> { produto });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
         // Inserir produto
         [HttpPost]
-        public ActionResult<Produto> Post(Produto produto)
+        public IActionResult Post(ProdutoDTO produto)
         {
             return Ok();
         }

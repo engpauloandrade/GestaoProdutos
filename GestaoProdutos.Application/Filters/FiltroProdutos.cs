@@ -7,6 +7,8 @@ namespace GestaoProdutos.Application.Filters
     {
 
         public string? Descricao { get; set; } = string.Empty;
+        public string? Codigo { get; set; } = string.Empty;
+
 
         public ProdutoDTO? Dado()
         {
@@ -15,6 +17,10 @@ namespace GestaoProdutos.Application.Filters
             if (!string.IsNullOrEmpty(this.Descricao))
             {
                 produto.Descricao = this.Descricao;
+
+            } else if (this.Codigo != null)
+            {
+                produto.Codigo = this.Codigo;
             }
             return produto;
         }
