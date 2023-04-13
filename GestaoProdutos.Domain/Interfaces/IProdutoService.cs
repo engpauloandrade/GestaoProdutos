@@ -1,7 +1,12 @@
-﻿namespace GestaoProdutos.Domain.Interfaces
+﻿using GestaoProdutos.Domain.Model;
+using System.Collections.Generic;
+
+namespace GestaoProdutos.Domain.Interfaces
 {
-    public interface IProdutoService<DTO> where DTO : class
+    public interface IProdutoService<T>
+        where T : class
     {
-        Task<IEnumerable<DTO>> Get(int page, int pageSize);
+        Task<IEnumerable<T>> GetPaginado(string filtro, int page, int pageSize);
+
     }
 }

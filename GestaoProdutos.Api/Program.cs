@@ -1,4 +1,5 @@
 using GestaoProdutos.Application.DTO;
+using GestaoProdutos.Application.Filters;
 using GestaoProdutos.Application.Services;
 using GestaoProdutos.Domain.Interfaces;
 using GestaoProdutos.Domain.Model;
@@ -17,7 +18,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<ProdutoService>();
+builder.Services.AddScoped<IProdutoService<ProdutoDTO>, ProdutoService>();
+builder.Services.AddScoped<IFiltro<ProdutoDTO>, FiltroProdutos>();
+
 
 builder.Services.AddScoped<IPagedResultService<Produto>, PagedResultService<Produto>>();
 

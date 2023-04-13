@@ -9,7 +9,6 @@ namespace GestaoProdutos.Application.Filters
         public string? Descricao { get; set; } = string.Empty;
         public string? Codigo { get; set; } = string.Empty;
 
-
         public ProdutoDTO? Dado()
         {
             ProdutoDTO produto = new();

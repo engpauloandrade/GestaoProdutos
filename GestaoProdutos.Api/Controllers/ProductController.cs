@@ -15,28 +15,30 @@ namespace GestaoProdutos.Api.Controllers
     {
         private readonly ApiDbContext _ctx;
         private readonly IPagedResultService<Produto> _pagedResultService;
+        private readonly IProdutoService<ProdutoDTO> _produtoService;
 
-        public ProductController(ApiDbContext ctx, IPagedResultService<Produto> pagedResultService)
+        public ProductController(ApiDbContext ctx, IPagedResultService<Produto> pagedResultService, IProdutoService<ProdutoDTO> produtoService)
         {
+            this._produtoService = produtoService;
             this._pagedResultService= pagedResultService;
             this._ctx = ctx;
         }
 
         // Listar todos os produtos 
         [HttpGet]
-        public IActionResult GetProdutosList([FromQuery] FiltroProdutos? filtro, [FromQuery] int pagina = PaginacaoBase.PAGINA_PADRAO, [FromQuery] int tamanhoPagina = PaginacaoBase.TAMANHO_PADRAO)
+        public IActionResult GetProdutosList([FromQuery] string filtro, [FromQuery] int pagina = PaginacaoBase.PAGINA_PADRAO, [FromQuery] int tamanhoPagina = PaginacaoBase.TAMANHO_PADRAO)
         {
             try
             {
-                var produtos = _ctx.Produtos.Where(p => p.Descricao.Contains(filtro.Descricao ?? ""));
-                var pagedProdutos = _pagedResultService.GetPagedResult(produtos, pagina, tamanhoPagina);
-                return Ok(pagedProdutos);
+                var produtoPaginado = _produtoService.GetPaginado(filtro, pagina, tamanhoPagina);
+                return Ok(produtoPaginado.Result);
             }
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
 
 
 

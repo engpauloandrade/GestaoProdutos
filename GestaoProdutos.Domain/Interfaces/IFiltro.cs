@@ -1,7 +1,7 @@
 ﻿namespace GestaoProdutos.Domain.Interfaces
 {
-    public interface IFiltro<DTO> where DTO : class
+    public interface IFiltro<T>
     {
-        public DTO? Dado();
+        string Descricao { get; set; }
     }
 }

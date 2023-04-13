@@ -22,7 +22,8 @@ namespace GestaoProdutos.Application.Services
         {
             var skipCount = (page - 1) * pageSize;
 
-            var items = query.Skip(skipCount).Take(pageSize).ToList();
+            var items = query.ToList();
+
             var totalCount = query.Count();
 
             var hasNext = (skipCount + items.Count) < totalCount;
