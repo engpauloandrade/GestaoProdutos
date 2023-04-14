@@ -6,9 +6,9 @@ namespace GestaoProdutos.Application.Services
 {
     public class PagedResultService<T> : IPagedResultService<T>
     {
-        private readonly ApiDbContext _context;
+        private readonly IApiDbContext _context;
 
-        public PagedResultService(ApiDbContext context)
+        public PagedResultService(IApiDbContext context)
         {
             _context = context;
         }

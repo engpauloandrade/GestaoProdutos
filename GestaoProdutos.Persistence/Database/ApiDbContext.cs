@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GestaoProdutos.Persistence.Database
 {
-    public class ApiDbContext : DbContext
+    public class ApiDbContext : DbContext, IApiDbContext
     {
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
         {

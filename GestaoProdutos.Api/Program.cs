@@ -25,7 +25,7 @@ builder.Services.AddScoped<IFiltro<ProdutoDTO>, FiltroProdutos>();
 builder.Services.AddScoped<IPagedResultService<Produto>, PagedResultService<Produto>>();
 
 //Banco De dados
-builder.Services.AddDbContext<ApiDbContext>(options =>
+builder.Services.AddDbContext<IApiDbContext, ApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer")));
 
 var app = builder.Build();

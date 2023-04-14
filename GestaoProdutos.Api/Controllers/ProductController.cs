@@ -51,6 +51,10 @@ namespace GestaoProdutos.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // Inserir produto

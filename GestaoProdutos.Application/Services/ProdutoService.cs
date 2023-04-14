@@ -10,9 +10,9 @@ namespace GestaoProdutos.Application.Services
     public class ProdutoService : IProdutoService<ProdutoDTO>
     {
         private readonly IMapper _mapper;
-        private readonly ApiDbContext _dbContext;
+        private readonly IApiDbContext _dbContext;
         private readonly IPagedResultService<Produto> _pagedResultService;
-        public ProdutoService( IMapper mapper, ApiDbContext dbContext, IPagedResultService<Produto> _pagedResultService)
+        public ProdutoService( IMapper mapper, IApiDbContext dbContext, IPagedResultService<Produto> _pagedResultService)
         {
             this._pagedResultService = _pagedResultService;
             this._dbContext = dbContext;
@@ -22,6 +22,12 @@ namespace GestaoProdutos.Application.Services
         public Task<IEnumerable<ProdutoDTO>> GetPorCodigo(string codigo)
         {
             var produto = _dbContext.Produtos?.FirstOrDefault(p => p.Codigo.Equals(codigo));
+
+            if (produto == null)
+            {
+                throw new InvalidOperationException("Produto não encontrado.");
+            }
+
             var produtosDTO = _mapper.Map<ProdutoDTO>(produto);
             return Task.FromResult<IEnumerable<ProdutoDTO>>(new List<ProdutoDTO> { produtosDTO });
         }
