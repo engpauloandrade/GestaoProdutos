@@ -4,6 +4,7 @@ using GestaoProdutos.Application.Filters;
 using GestaoProdutos.Application.Pagination;
 using GestaoProdutos.Domain.Interfaces;
 using GestaoProdutos.Domain.Model;
+using GestaoProdutos.Persistence.Migrations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestaoProdutos.Api.Controllers
@@ -38,7 +39,6 @@ namespace GestaoProdutos.Api.Controllers
             }
         }
 
-
         // Recuperar um produto pelo código
         [HttpGet("{codigo}")]
         public IActionResult GetProduto(string codigo)
@@ -53,7 +53,6 @@ namespace GestaoProdutos.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         // Inserir produto
         [HttpPost]
@@ -72,22 +71,38 @@ namespace GestaoProdutos.Api.Controllers
 
         }
 
-
-
         // Editar produto
         [HttpPut("{codigo}")]
-        public IActionResult Put(int codigo, Produto produto)
+        public async Task<IActionResult> AtualizarProduto(string codigo, [FromBody] ProdutoDTO produtoDTO)
         {
+            try
+            {
+                var produto = _mapper.Map<Produto>(produtoDTO);
+                var produtoAtualizado = await _produtoService.AtualizaProduto(codigo, produto);
 
-            return Ok();
+                return Ok(produtoAtualizado);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
 
         // Excluir produto
         [HttpDelete("{codigo}")]
-        public IActionResult Delete(int codigo)
+        public async Task<IActionResult> Delete(string codigo)
         {
-            return Ok();
+            try
+            {
+                var produtoDeletado = await _produtoService.DeletaProduto(codigo);
+                return Ok(produtoDeletado);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }

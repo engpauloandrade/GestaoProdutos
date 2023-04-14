@@ -3,6 +3,7 @@ using GestaoProdutos.Application.DTO;
 using GestaoProdutos.Domain.Interfaces;
 using GestaoProdutos.Domain.Model;
 using GestaoProdutos.Persistence.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace GestaoProdutos.Application.Services
 {
@@ -47,5 +48,42 @@ namespace GestaoProdutos.Application.Services
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<ProdutoDTO>(produto);
         }
+
+        public async Task<ProdutoDTO> AtualizaProduto(string codigo, Produto produto)
+        {
+            var produtoExistente = await _dbContext.Produtos.FirstOrDefaultAsync(p => p.Codigo == codigo);
+
+            if (produtoExistente == null)
+            {
+                throw new InvalidOperationException("Produto não encontrado.");
+            }
+
+            produtoExistente.Descricao = produto.Descricao;
+
+            await _dbContext.SaveChangesAsync();
+
+            var produtoAtualizadoDTO = _mapper.Map<ProdutoDTO>(produtoExistente);
+
+            return produtoAtualizadoDTO;
+        }
+
+
+        public async Task<ProdutoDTO> DeletaProduto(string codigo)
+        {
+            var produto = await _dbContext.Produtos.FirstOrDefaultAsync(p => p.Codigo == codigo);
+
+            if (produto == null)
+            {
+                throw new ArgumentException("Produto não encontrado.");
+            }
+
+            _dbContext.Produtos.Remove(produto);
+            await _dbContext.SaveChangesAsync();
+
+            var produtoDeletadoDTO = _mapper.Map<ProdutoDTO>(produto);
+
+            return produtoDeletadoDTO;
+        }
+
     }
 }
