@@ -3,7 +3,6 @@ using GestaoProdutos.Application.DTO;
 using GestaoProdutos.Domain.Interfaces;
 using GestaoProdutos.Domain.Model;
 using GestaoProdutos.Persistence.Database;
-using Microsoft.EntityFrameworkCore;
 
 namespace GestaoProdutos.Application.Services
 {
@@ -42,5 +41,11 @@ namespace GestaoProdutos.Application.Services
             return produtosDTO;
         }
 
+        public async Task<ProdutoDTO> PostProduto(Produto produto)
+        {
+            _dbContext.Produtos.Add(produto);
+            await _dbContext.SaveChangesAsync();
+            return _mapper.Map<ProdutoDTO>(produto);
+        }
     }
 }

@@ -1,10 +1,9 @@
-﻿using GestaoProdutos.Application.DTO;
+﻿using AutoMapper;
+using GestaoProdutos.Application.DTO;
 using GestaoProdutos.Application.Filters;
 using GestaoProdutos.Application.Pagination;
-using GestaoProdutos.Application.Services;
 using GestaoProdutos.Domain.Interfaces;
 using GestaoProdutos.Domain.Model;
-using GestaoProdutos.Persistence.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestaoProdutos.Api.Controllers
@@ -15,9 +14,11 @@ namespace GestaoProdutos.Api.Controllers
     {
 
         private readonly IProdutoService<ProdutoDTO> _produtoService;
+        private readonly IMapper _mapper;
 
-        public ProductController(IProdutoService<ProdutoDTO> produtoService)
+        public ProductController(IProdutoService<ProdutoDTO> produtoService, IMapper mapper)
         {
+            this._mapper= mapper;
             this._produtoService = produtoService;
  
         }
@@ -56,10 +57,22 @@ namespace GestaoProdutos.Api.Controllers
 
         // Inserir produto
         [HttpPost]
-        public IActionResult Post(ProdutoDTO produto)
+        public async Task<IActionResult> Post([FromBody] ProdutoDTO produtoDTO)
         {
-            return Ok();
+            try
+            {
+                var produto = _mapper.Map<Produto>(produtoDTO);
+                var produtoCriado = await _produtoService.PostProduto(produto);
+                return Ok(produtoCriado);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
+
+
 
         // Editar produto
         [HttpPut("{codigo}")]

@@ -8,7 +8,7 @@ namespace GestaoProdutos.Domain.Interfaces
     {
         Task<IEnumerable<T>> GetFiltrado(string filtro, int page, int pageSize);
         Task<IEnumerable<T>> GetPorCodigo(string codigo);
-
+        Task<T> PostProduto(Produto produto);
 
     }
 }
