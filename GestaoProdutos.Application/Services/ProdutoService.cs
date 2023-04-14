@@ -67,6 +67,7 @@ namespace GestaoProdutos.Application.Services
             }
 
             produtoExistente.Descricao = produto.Descricao;
+            produtoExistente.Quantidade= produto.Quantidade;
 
             await _dbContext.SaveChangesAsync();
 
