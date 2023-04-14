@@ -1,6 +1,4 @@
 ﻿using GestaoProdutos.Domain.Model;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace GestaoProdutos.Domain.Interfaces
 {

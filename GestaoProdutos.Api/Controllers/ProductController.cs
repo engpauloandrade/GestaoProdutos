@@ -4,7 +4,6 @@ using GestaoProdutos.Application.Filters;
 using GestaoProdutos.Application.Pagination;
 using GestaoProdutos.Domain.Interfaces;
 using GestaoProdutos.Domain.Model;
-using GestaoProdutos.Persistence.Migrations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestaoProdutos.Api.Controllers
@@ -58,6 +57,11 @@ namespace GestaoProdutos.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProdutoDTO produtoDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var produto = _mapper.Map<Produto>(produtoDTO);
@@ -73,6 +77,7 @@ namespace GestaoProdutos.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         // Editar produto
         [HttpPut("{codigo}")]

@@ -11,6 +11,7 @@ namespace GestaoProdutos.Domain.Model
     {
         public string Codigo { get; set; } = string.Empty;
         public string Descricao { get; set; } = string.Empty;
+        public int Quantidade { get; set; }
         public string Situacao { get; set; } = string.Empty;
         public DateTime DataFabricacao { get; set; }
         public DateTime DataValidade { get; set; }

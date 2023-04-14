@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Bogus.DataSets;
 using GestaoProdutos.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +33,8 @@ namespace GestaoProdutos.Persistence.Database
                     DataValidade = new Faker().Date.Future(),
                     FornecedorCodigo = new Faker().Random.Int(1, 2000),
                     FornecedorDescricao = new Faker().Company.CompanyName(),
-                    FornecedorCnpj = new Faker().Random.ReplaceNumbers("########0001")
+                    FornecedorCnpj = new Faker().Random.ReplaceNumbers("########0001"),
+                    Quantidade = new Faker().Random.Int(1, 100)
                 });
             }
             return result.ToArray();
