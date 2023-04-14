@@ -25,12 +25,12 @@ namespace GestaoProdutos.Api.Controllers
 
         // Listar todos os produtos 
         [HttpGet]
-        public IActionResult GetProdutosList([FromQuery] FiltroProdutos? filtro, [FromQuery] int pagina = PaginacaoBase.PAGINA_PADRAO, [FromQuery] int tamanhoPagina = PaginacaoBase.TAMANHO_PADRAO)
+        public async Task<IActionResult> GetProdutosList([FromQuery] FiltroProdutos? filtro, [FromQuery] int pagina = PaginacaoBase.PAGINA_PADRAO, [FromQuery] int tamanhoPagina = PaginacaoBase.TAMANHO_PADRAO)
         {
             try
             {
-                var produtoPaginado = _produtoService.GetFiltrado(filtro.Descricao, pagina, tamanhoPagina);
-                return Ok(produtoPaginado.Result);
+                var produtoPaginado = await _produtoService.GetFiltrado(filtro.Descricao, pagina, tamanhoPagina);
+                return Ok(produtoPaginado);
             }
             catch (ArgumentException ex)
             {
@@ -40,12 +40,12 @@ namespace GestaoProdutos.Api.Controllers
 
         // Recuperar um produto pelo código
         [HttpGet("{codigo}")]
-        public IActionResult GetProduto(string codigo)
+        public async Task<IActionResult> GetProduto(string codigo)
         {
             try
             {
-                var produtoCodigo = _produtoService.GetPorCodigo(codigo);
-                return Ok(produtoCodigo.Result);
+                var produtoCodigo = await _produtoService.GetPorCodigo(codigo);
+                return Ok(produtoCodigo);
             }
             catch (ArgumentException ex)
             {
