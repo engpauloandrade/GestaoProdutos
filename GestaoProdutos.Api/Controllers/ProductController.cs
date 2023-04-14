@@ -57,25 +57,25 @@ namespace GestaoProdutos.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProdutoDTO produtoDTO)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                try
+                {
+                    var produto = _mapper.Map<Produto>(produtoDTO);
+                    var produtoCriado = await _produtoService.PostProduto(produto);
+                    return Ok(produtoCriado);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return BadRequest("Produto já cadastrado.");
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
 
-            try
-            {
-                var produto = _mapper.Map<Produto>(produtoDTO);
-                var produtoCriado = await _produtoService.PostProduto(produto);
-                return Ok(produtoCriado);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest("Produto já cadastrado.");
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest(ModelState);
         }
 
 
