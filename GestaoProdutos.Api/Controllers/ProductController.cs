@@ -64,11 +64,14 @@ namespace GestaoProdutos.Api.Controllers
                 var produtoCriado = await _produtoService.PostProduto(produto);
                 return Ok(produtoCriado);
             }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest("Produto já cadastrado.");
+            }
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
         // Editar produto
@@ -96,7 +99,7 @@ namespace GestaoProdutos.Api.Controllers
             try
             {
                 var produtoDeletado = await _produtoService.DeletaProduto(codigo);
-                return Ok(produtoDeletado);
+                return Ok("Produto excluído com sucesso.");
             }
             catch (ArgumentException ex)
             {

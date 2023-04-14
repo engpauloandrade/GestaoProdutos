@@ -44,8 +44,16 @@ namespace GestaoProdutos.Application.Services
 
         public async Task<ProdutoDTO> PostProduto(Produto produto)
         {
+            var produtoExistente = await _dbContext.Produtos.FirstOrDefaultAsync(p => p.Codigo == produto.Codigo);
+
+            if (produtoExistente != null)
+            {
+                throw new InvalidOperationException();
+            }
+
             _dbContext.Produtos.Add(produto);
             await _dbContext.SaveChangesAsync();
+
             return _mapper.Map<ProdutoDTO>(produto);
         }
 
