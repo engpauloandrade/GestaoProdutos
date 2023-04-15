@@ -59,5 +59,46 @@ namespace GestaoProdutos.Tests
             Assert.IsNotNull(produtoDeletado);
             Assert.AreEqual(codigo, produtoDeletado.Codigo);
         }
+
+
+        [Test]
+        public async Task DeletaProdutos_DeveDarErroAoRemoverProdutoDoBancoDeDados()
+        {
+            // Arrange
+            string codigo = "123454";
+
+            var produto = new Produto()
+            {
+                Codigo = codigo,
+            };
+
+            await _dbContext.Produtos.AddAsync(produto);
+            await _dbContext.SaveChangesAsync();
+
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentException>(async () => await _produtoService.DeletaProduto("4536544"));
+        }
+
+
+        [Test]
+        public async Task GetPorCodigo_PegaUmProdutoDoBancoDeDados()
+        {
+            // Arrange
+            string codigo = "123454";
+
+            var produto = new Produto()
+            {
+                Codigo = codigo,
+            };
+
+            await _dbContext.Produtos.AddAsync(produto);
+            await _dbContext.SaveChangesAsync();
+
+            // Act
+            var produtoFiltrado = await _produtoService.GetPorCodigo(codigo);
+
+            // Assert
+            Assert.IsNotNull(produtoFiltrado);
+        }
     }
 }
