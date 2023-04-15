@@ -100,5 +100,31 @@ namespace GestaoProdutos.Tests
             // Assert
             Assert.IsNotNull(produtoFiltrado);
         }
+
+        [Test]
+        public async Task GetFiltrado_FiltraProdutosPorCaracteres()
+        {
+            // Arrange
+            string Descricao = "Pratos de loucas";
+
+            var produto = new Produto()
+            {
+                Descricao = Descricao,
+            };
+
+            await _dbContext.Produtos.AddAsync(produto);
+            await _dbContext.SaveChangesAsync();
+
+            // Act
+            var produtoFiltrado = await _produtoService.GetFiltrado("pr", 1, 1);
+
+            // Assert
+            Assert.AreEqual(Descricao, produtoFiltrado.FirstOrDefault()?.Descricao);
+
+            // Clean up
+            _dbContext.Produtos.Remove(produto);
+            await _dbContext.SaveChangesAsync();
+
+        }
     }
 }

@@ -38,7 +38,8 @@ namespace GestaoProdutos.Application.Services
 
             if (!string.IsNullOrEmpty(filtro))
             {
-                produtos = produtos.Where(p => p.Descricao.Contains(filtro));
+                filtro = filtro.ToLower(); // converta filtro para lowercase
+                produtos = produtos.Where(p => p.Descricao.ToLower().Contains(filtro)); // converta a descrição do produto para lowercase e faça a filtragem
             }
 
             var pagedProdutos = _pagedResultService.GetPagedResult(produtos, page, pageSize);
@@ -47,6 +48,7 @@ namespace GestaoProdutos.Application.Services
 
             return produtosDTO;
         }
+
 
         public async Task<ProdutoDTO> PostProduto(Produto produto)
         {
