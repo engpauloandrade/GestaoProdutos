@@ -123,7 +123,7 @@ namespace GestaoProdutos.Tests
             var produtoFiltrado = await _produtoService.GetFiltrado("pr", 1, 1);
 
             // Assert
-            Assert.AreEqual(Descricao, produtoFiltrado.FirstOrDefault()?.Descricao);
+            Assert.That(Descricao, Is.EqualTo(produtoFiltrado.FirstOrDefault()?.Descricao));
 
             // Clean up
             _dbContext.Produtos.Remove(produto);
