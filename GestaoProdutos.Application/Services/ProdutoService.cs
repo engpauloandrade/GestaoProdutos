@@ -25,7 +25,7 @@ namespace GestaoProdutos.Application.Services
 
             if (produto == null)
             {
-                throw new InvalidOperationException("Produto não encontrado.");
+                return Task.FromResult<IEnumerable<ProdutoDTO>>(new List<ProdutoDTO> { null });
             }
 
             var produtosDTO = _mapper.Map<ProdutoDTO>(produto);
@@ -87,20 +87,29 @@ namespace GestaoProdutos.Application.Services
 
         public async Task<ProdutoDTO> DeletaProduto(string codigo)
         {
-            var produto = await _dbContext.Produtos.FirstOrDefaultAsync(p => p.Codigo == codigo);
-
-            if (produto == null)
+            try
             {
-                throw new ArgumentException("Produto não encontrado.");
+                var produto = await _dbContext.Produtos.FirstOrDefaultAsync(p => p.Codigo == codigo);
+
+                if (produto != null)
+                {
+                    _dbContext.Produtos.Remove(produto);
+                    await _dbContext.SaveChangesAsync();
+
+                    var produtoDeletadoDTO = _mapper.Map<ProdutoDTO>(produto);
+
+                    return produtoDeletadoDTO;
+                }
+
+                return null;
+
             }
-
-            _dbContext.Produtos.Remove(produto);
-            await _dbContext.SaveChangesAsync();
-
-            var produtoDeletadoDTO = _mapper.Map<ProdutoDTO>(produto);
-
-            return produtoDeletadoDTO;
+            catch (Exception ex)
+            {
+                throw new Exception("Ocorreu um erro ao excluir o produto.", ex);
+            }
         }
+
 
     }
 }

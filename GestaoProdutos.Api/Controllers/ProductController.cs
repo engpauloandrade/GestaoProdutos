@@ -51,10 +51,6 @@ namespace GestaoProdutos.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
         // Inserir produto
@@ -108,7 +104,7 @@ namespace GestaoProdutos.Api.Controllers
             try
             {
                 var produtoDeletado = await _produtoService.DeletaProduto(codigo);
-                return Ok("Produto excluído com sucesso.");
+                return Ok(produtoDeletado);
             }
             catch (ArgumentException ex)
             {

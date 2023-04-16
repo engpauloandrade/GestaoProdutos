@@ -53,11 +53,11 @@ namespace GestaoProdutos.Tests
             await _dbContext.SaveChangesAsync();
 
             // Act
-            var produtoDeletado = await _produtoService.DeletaProduto(codigo);
+            var produtoDeletado = await _produtoService.DeletaProduto("123454");
 
             // Assert
             Assert.IsNotNull(produtoDeletado);
-            Assert.AreEqual(codigo, produtoDeletado.Codigo);
+            Assert.That(produtoDeletado.Codigo, Is.EqualTo(codigo));
         }
 
 
@@ -75,8 +75,12 @@ namespace GestaoProdutos.Tests
             await _dbContext.Produtos.AddAsync(produto);
             await _dbContext.SaveChangesAsync();
 
-            // Act & Assert
-            Assert.ThrowsAsync<ArgumentException>(async () => await _produtoService.DeletaProduto("4536544"));
+            // Assert
+            var produtoDeletado = await _produtoService.DeletaProduto("323232");
+
+
+            // Act
+            Assert.IsNull(produtoDeletado);
         }
 
 
